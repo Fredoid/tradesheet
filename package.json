@@ -1,0 +1,13 @@
+{
+	"name": "trading-screen",
+	"main": "server.js",
+	"dependencies": {
+		"body-parser": "~1.4.2",
+		"express": "~4.5.1",
+		"extend": "latest",
+		"kraken-api": "1.0.0",
+		"method-override": "~2.0.2",
+		"promise": "latest",
+		"socket.io": "latest"
+	}
+}

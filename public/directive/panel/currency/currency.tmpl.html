@@ -1,0 +1,19 @@
+<div class="panel panel-default panel-counter">
+  <div class="panel-body">
+    <h3 class="title">
+        <span class="glyphicon" ng-class="icon"></span>
+        {{title}} {{subvalue}}
+    </h3>
+    <h3 class="subvalue" ng-if="subvalue">
+        
+    </h3>
+    <h1 ng-if="value">
+        {{value}}
+    </h1>
+      <h1 class="counter-xl" ng-if="currentTicker && previousTicker">
+        <moveable-value current="currentTicker" previous="previousTicker">
+            {{currentTicker | currency}}
+        </moveable-value>
+      </h1>
+  </div>
+</div>

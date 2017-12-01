@@ -1,0 +1,6 @@
+<div class="panel panel-default" ng-class="{'no-padding': title.length == 0}">
+    <div class="panel-heading" ng-if="title.length > 0">{{title}}</div>
+  <div class="panel-body">
+    <ng-transclude></ng-transclude>
+  </div>
+</div>

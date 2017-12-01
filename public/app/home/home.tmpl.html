@@ -1,0 +1,116 @@
+<div class="row">
+    <!--
+    <div class="col-xs-12 col-md-4 counter-time">
+        <panel-currency title="{{lastRefreshedDate | date:'dd/MM/yyyy'}}" value="lastRefreshedDate | date:'HH:mm.ss'"  icon="glyphicon-time"></panel-currency>
+    </div>
+    -->
+    <div class="col-xs-12 col-md-4 reserve" >
+        <panel-currency 
+            title="Réserve" 
+            value="balance['ZEUR'].valueeuro | currency" 
+            icon="glyphicon-euro" ></panel-currency>
+    </div>
+    
+    <div class="col-xs-12 col-md-4 counter-total">
+        <panel-currency title="Solde" current-ticker="balanceTotal" previous-ticker="totalDeposite" value="(balanceTotal - totalDeposite> 0? '+' : '') + ((balanceTotal - totalDeposite) | currency)" icon="glyphicon-euro"></panel-currency>
+    </div>
+<!--     
+</div>
+<div class="row">
+-->
+    <div class="col-xs-12 col-md-4 balance-ticker" ng-repeat="tick in tickers | mainTickers | orderBy:'balance.valueeuro':-1">
+        <panel-currency 
+            title="{{currenciesService.formatTitleFromPair(tick.label)}}" 
+            value="tick.balance.valueeuro | currency" 
+            icon="glyphicon-bitcoin" 
+            subvalue="tick.balance.value"
+            current-ticker="tick.b[0]"
+            previous-ticker="tick.o"></panel-currency>
+    </div>
+    
+</div>
+<div class="row">
+    <div class="col-xs-12 col-md-4 ticker" ng-repeat="tick in tickers | otherTickers | orderBy:'rate':-1">
+        <panel-currency 
+            title="{{currenciesService.formatTitleFromPair(tick.label)}}" 
+            value="balance[currenciesService.formatBalanceFromPair(tick.label)].valueeuro | currency" 
+            icon="glyphicon-bitcoin" 
+            subvalue="balance[currenciesService.formatBalanceFromPair(tick.label)].value"
+            current-ticker="tick.b[0]"
+            previous-ticker="tick.o"></panel-currency>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <!--
+        <panel>
+            <h1 class="counter-xl">
+                <moveable-value current="ticker[currenciesService.formatFromBalance('XXBT')].b[0]" previous="ticker[currenciesService.formatFromBalance('XXBT')].o">
+                    {{ticker[currenciesService.formatFromBalance('XXBT')].b[0] | currency}}
+                </moveable-value>
+            </h1>    
+        </panel>
+        
+        <panel>
+            <div class="chart-container">
+                <iframe src="http://trade.kraken.com/kraken/btceur/1h"></iframe>
+            </div>
+        </panel>
+    -->
+    </div>
+    <div class="col-md-6">
+        
+        <panel title="Open Orders" ng-if="openOrders.length > 0">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th class="hidden-xs">Type</th>
+                        <th >Volume</th>
+                        <th >Market</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="order in openOrders | limitTo:5" ng-class="{'danger': order.descr.type == 'sell', 'success': order.descr.type == 'buy'}">
+                       <td>{{order.date | date:'dd/MM/yyyy'}}</td>
+                        <td class="hidden-xs">{{order.descr.ordertype}}</td>
+                        <td >{{order.vol}}</td>
+                        <td>{{order.descr.price}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </panel>
+        
+        <panel title="Closed Orders">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Rate</th>
+                        <th>Benefit</th>
+                        <th class="hidden-xs">Date</th>
+                        <th class="hidden-xs">Pair</th>
+                        <th>Coût</th>
+                        <th class="hidden-xs">Volume</th>
+                        <th>Market</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="order in closedOrders | closedOrders | limitTo:5" ng-class="{'danger': order.descr.type == 'sell', 'success': order.descr.type == 'buy'}">
+                        <td>
+                            <moveable-value current="ticker[currenciesService.formatFromOrder(order.descr.pair)].b[0]" previous="order.price"></moveable-value>
+                        </td>
+                        <td>{{(ticker[currenciesService.formatFromOrder(order.descr.pair)].b[0]*order.vol)-(order.price*order.vol) | number:2}} €</td>
+                        <td class="hidden-xs">{{order.date | date:'dd/MM/yyyy'}}</td>
+                        <td class="hidden-xs">{{order.descr.pair}}</td>
+                        <td>{{order.cost | currency}}</td>
+                        <td class="hidden-xs">{{order.vol}}</td>
+                        <td >{{order.price | currency}}</td>
+                        
+                    </tr>
+                </tbody>
+            </table>
+        </panel>
+    </div>
+</div>
+
+

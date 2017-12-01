@@ -1,0 +1,7 @@
+<span class="moveable-info">
+    <span class="glyphicon" ng-class="{'glyphicon-arrow-up': state == 1, 'glyphicon-arrow-down': state == -1, 'toUp': state == 1, 'toDown': state == -1}"></span>
+    <span class="rate" ng-class="{'toUp': state == 1, 'toDown' : state == -1}"><br/>{{rate | percentage:2}}</span>
+</span>
+<span class="moveable-value" ng-class="{'toUp': state == 1, 'toDown' : state == -1}">
+    <ng-transclude></ng-transclude>
+</span>
