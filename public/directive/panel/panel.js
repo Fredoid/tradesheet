@@ -5,7 +5,7 @@ angular.module('directive.panel', [])
         restrict: "E",
         templateUrl: "directive/panel/panel.tmpl.html",
         transclude: true,
-        scope: { title: '@'},
+        scope: { title: '='},
         controller: function($scope){}
         
     }

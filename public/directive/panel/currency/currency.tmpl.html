@@ -1,18 +1,32 @@
 <div class="panel panel-default panel-counter">
-  <div class="panel-body">
-    <h3 class="title">
-        <span class="glyphicon" ng-class="icon"></span>
-        {{title}} {{subvalue}}
-    </h3>
-    <h3 class="subvalue" ng-if="subvalue">
-        
-    </h3>
-    <h1 ng-if="value">
-        {{value}}
+  <div class="panel-body clickable" >
+    <div class="corner-top-left">
+        <h3 class="title">
+            <span class="glyphicon" ng-class="icon"></span>
+            {{title}} <span class="subvalue">{{subvalue}}</span>
+        </h3>
+
+          <h4 ng-if="enableGain">
+            <moveable-value current="value" previous="previousValue" enable-color="true">
+                {{value - previousValue | currency}}
+            </moveable-value>
+            <br ng-if="lastBotRate && lastBotRate.rate"/>
+            <span ng-if="lastBotRate && lastBotRate.rate">{{lastBotRate.rate * 100 | number:2}} %</span>
+            <br ng-if="lastBotRate && lastBotRate.date"/>
+            <span ng-if="lastBotRate && lastBotRate.date">{{Now - lastBotRate.date | duration:'hh:mm:ss'}}</span>
+            <br ng-if="lastBotRatio"/>
+            <span ng-if="lastBotRatio">{{lastBotRatio * 100 | number:2}} %</span>
+        </h4>
+      </div>
+    
+    
+    <h1 ng-if="value && !hideValue" class="value">
+        {{value | currency}}
     </h1>
-      <h1 class="counter-xl" ng-if="currentTicker && previousTicker">
-        <moveable-value current="currentTicker" previous="previousTicker">
-            {{currentTicker | currency}}
+
+      <h1 ng-class="{'counter-xl': xl}" ng-if="(currentTickerBase || currentTicker) && previousTicker">
+        <moveable-value current="currentTickerBase || currentTicker" previous="previousTicker" enable-color="true">
+            {{(currentTicker || currentTickerBase) | setDecimal:nbDecimal}}
         </moveable-value>
       </h1>
   </div>

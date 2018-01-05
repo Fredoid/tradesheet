@@ -10,6 +10,7 @@
         "angular-ui-router": "latest",
         "angular-i18n": "latest",
         "angular-resource": "latest",
-        "jquery": "latest"
+        "jquery": "latest",
+        "d3": "latest"
     }
 }

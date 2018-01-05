@@ -12,17 +12,16 @@ angular.module('service.sync', [])
         if(_callbacks[event])
             for(var i = 0 ; i < _callbacks[event].length; ++i)
                 if(typeof _callbacks[event][i] == "function")
-                    _callbacks[event][i](_ticks[event]);    
+                    setTimeout((function(index){ return function(){ _callbacks[event][index](_ticks[event]); } })(i), 0);    
         
         if(_onthefly[event])
             for(var i = 0 ; i < _onthefly[event].length; ++i)
                 if(typeof _onthefly[event][i] == "function")
-                    _onthefly[event][i](_ticks[event]);  
-        _onthefly[event] = [];
+                    setTimeout((function(index){ return function(){ _onthefly[event][i](_ticks[event]); delete _onthefly[event][index]; } })(i), 0);    
     }
     
     var socket = io();
-    var events = ["ticker", "balance", "openOrders", "closedOrders", "deposit", "tickers"];
+    var events = ["ticker", "balance", "openOrders", "closedOrders", "deposit", "tickers", "info", "bot-data", "watcher"];
     for(var i = 0 ; i < events.length ; ++i) {
         socket.on(events[i], (function(event) {
             return function(data){
@@ -39,6 +38,8 @@ angular.module('service.sync', [])
             if(!_callbacks[event])
                 _callbacks[event] = [];
             _callbacks[event].push(callback);
+            if(_ticks[event])
+                callback(_ticks[event]);
         },
         
         last: function(event, callback){

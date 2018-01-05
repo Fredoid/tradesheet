@@ -7,7 +7,8 @@ angular.module('directive.moveableValue', [])
         transclude: true,
         scope: {
             current: '=',
-            previous: '='
+            previous: '=',
+            enableColor: '='
         },
         controller: function($scope, $window){
             $scope.state = 0;
@@ -19,7 +20,7 @@ angular.module('directive.moveableValue', [])
                 $scope.state = c > p ? 1 : c < p ? -1 : 0;
                 
                 var diff = c - p;
-                $scope.rate = (diff * 100 / p) / 100;
+                $scope.rate = diff * 100 / p;
             }
             
             $scope.$watch("current", refreshState);

@@ -8,6 +8,12 @@
 		"kraken-api": "1.0.0",
 		"method-override": "~2.0.2",
 		"promise": "latest",
-		"socket.io": "latest"
+		"socket.io": "latest",
+		"socket.io-client": "latest",
+		"url": "latest",
+		"trim": "latest",
+		"elasticsearch": "latest",
+		"querystring": "latest",
+		"json2csv": "latest"
 	}
 }

@@ -1,5 +1,7 @@
 angular.module('directive', [
     'directive.panel',
     'directive.panel.currency',
-    'directive.moveableValue'
+    'directive.panel.order',
+    'directive.moveableValue',
+    'directive.krakenChart'
 ]);

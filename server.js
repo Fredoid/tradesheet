@@ -1,14 +1,15 @@
 // server.js
 
 // modules =================================================
-var express        = require('express');
-var app            = express();
-var server = require('http').Server(app);
-var bodyParser     = require('body-parser');
-var methodOverride = require('method-override');
-var krakenRunner   = require('./app/runner');
-var io = require('socket.io')(server);
-var extend = require('extend');
+var express         = require('express');
+var app             = express();
+var server          = require('http').Server(app);
+var bodyParser      = require('body-parser');
+var methodOverride  = require('method-override');
+var krakenRunner    = require('./app/runner');
+var io              = require('socket.io')(server);
+var extend          = require('extend');
+var api             = require("./app/api");
 
 // configuration ===========================================
 
@@ -39,19 +40,19 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(express.static(__dirname + '/public'));
 
 // routes ==================================================
-require('./app/routes')(app); // configure our routes
+require('./app/routes')(app, api); // configure our routes
 
 // start app ===============================================
 // startup our app at http://localhost:8080
-server.listen(port);
-
+var server = server.listen(port);
+server.timeout = 5*60*1000;
 // shoutout to the user                     
 console.log('Magic happens on port ' + port);
 
 
 
 
-var api = require("./app/api");
+
 var errorHandler = function(prop){
     return function(err){
         console.error("receive runner error", prop, err);
@@ -66,13 +67,14 @@ var newHandler = function(prop){
 
 var Runners = {};
 for(var prop in api){
-    if(!api[prop].loadOnStart) continue;
+    if(api[prop].handler.indexOf("stream") == -1 || !api[prop].loadOnStart) continue;
     Runners[prop] = new krakenRunner(api, prop)
     Runners[prop].on("error", "default", errorHandler(prop));
     Runners[prop].on("refresh", "default", newHandler(prop));
     Runners[prop].start();
 }
 
+/*
 var _pairs = [];
 Runners["balance"].on("refresh", 0, function(data){
     var currency = "";
@@ -92,7 +94,7 @@ Runners["ticker"].on("refresh", 0, function(data){
     // console.log("new ticker");
     //console.log(data);
 });
-
+*/
 io.on('connection', function(client){
   // console.log("socket client conected", client);
   for(var prop in Runners){  
@@ -110,6 +112,18 @@ io.on('connection', function(client){
           Runners[prop].unsubscribe("refresh", client.id);
       }
   });
+    
+    client.on("info", function(info){
+        client.broadcast.emit("info", info);
+    });
+    
+    client.on("bot-data", function(data){
+        client.broadcast.emit("bot-data", data);
+    });
+    
+    client.on("watcher", function(data){
+        client.broadcast.emit("watcher", data);
+    });
     
 });
 

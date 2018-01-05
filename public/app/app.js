@@ -2,6 +2,7 @@ angular.module('app', [
     'ui.router',
     'app.home',
     'app.compare',
+    'app.watcher',
     'directive',
     "service.sync",
     "service.currencies"
@@ -10,7 +11,8 @@ angular.module('app', [
     .config(function ($sceDelegateProvider, $stateProvider, $urlRouterProvider) {
 
         $sceDelegateProvider.resourceUrlWhitelist([
-            'self'
+            'self',
+            'http://trade.kraken.com/**'
           ]);
 
 
@@ -25,7 +27,9 @@ angular.module('app', [
     })
 
     .controller('AppCtrl', function ($scope, $templateCache, $state, $rootScope, $window, SyncService, CurrenciesService) {
-        
+        SyncService.on("info", function(info){
+            console.log("> Server Info:", info);
+        });
     })
 .filter('percentage', ['$filter', function ($filter) {
   return function (input, decimals) {
