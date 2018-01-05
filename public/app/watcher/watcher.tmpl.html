@@ -1,0 +1,25 @@
+<div class="watcher-form" ng-if="showForm" style="{{'top:' +  (selectedWatch.pos.top+10) + 'px;left:' +  selectedWatch.pos.left + 'px;'}}">
+    <div class="">
+        <div class="btn-toolbar" role="toolbar" aria-label="">
+          <div class="btn-group" role="group" aria-label="-1">
+            <button type="button" class="btn btn-danger" ng-class="{ 'active': selectedWatch[currency + '_perf'] == -1 }" ng-click="setWatcherPerf(selectedWatch, -1)">-1</button>
+            <button type="button" class="btn btn-default" ng-class="{ 'active': selectedWatch[currency + '_perf'] == 0 }" ng-click="setWatcherPerf(selectedWatch, 0)">0</button>
+            <button type="button" class="btn btn-success" ng-class="{ 'active': selectedWatch[currency + '_perf'] == 1 }" ng-click="setWatcherPerf(selectedWatch, 1)">1</button>
+         </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2">
+        <select ng-model="currency" ng-options="cur for cur in currencies"></select>
+    </div>
+    <div class="col-md-2">
+        <select ng-model="age" ng-options="ag for ag in ages" ng-change="ageChanged()"></select>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <svg height="500"></svg>
+    </div>
+</div>
+

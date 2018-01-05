@@ -1,0 +1,48 @@
+<div class="panel panel-default panel-counter">
+  <div class="panel-body row" >
+      <div class="col-md-2">  
+        <div class="btn-group" role="group" >
+            <button 
+                  type="button" 
+                  class="btn btn-success" 
+                  ng-class="{'active': order.type == 'buy'}" 
+                  ng-click="order.type = 'buy'">
+              Buy
+            </button>
+            <button 
+                  type="button" 
+                  class="btn btn-danger" 
+                  ng-class="{'active': order.type == 'sell'}" 
+                  ng-click="order.type = 'sell'">
+              Sell
+            </button>
+        </div>
+      </div>
+      <div class="col-md-2"> 
+        <select 
+                id="select-pair" 
+                class="form-control input-xl"
+                ng-model="order.pair"
+                ng-options="currenciesService.pretifyPairXBT(tick.id) as currenciesService.formatTitleFromPair(tick.id) for tick in tickers track by tick.id"></select>  
+      </div>
+      <div class="col-md-4"> 
+        <select ng-if="order.type == 'sell'"
+                name="select-buy-orders"
+                id="select-buy-orders" 
+                class="form-control"
+                ng-model="previousBuyOrder"
+                ng-options="ord as ord.label for ord in buyOrders | filter:{pair: order.pair} | orderBy:'date':-1 | limitTo:1 track by ord.id"></select>
+        
+        <select ng-if="order.type == 'buy'"
+                id="select-sell-orders" 
+                name="select-sell-orders"
+                class="form-control" 
+                ng-model="previousSellOrder"
+                ng-options="ord as ord.label for ord in sellOrders | filter:{pair: order.pair} | orderBy:'date':-1 | limitTo:1 track by ord.id"></select>
+      </div>
+      <div class="col-md-2">
+          <input type="number" class="form-control" ng-model="order.price" placeholder="Price">
+      </div>
+    </div>
+
+  </div>
